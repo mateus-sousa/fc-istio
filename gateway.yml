@@ -23,15 +23,32 @@ spec:
   gateways:
   - ingress-gateway-k3s
   http:
-    - route:
+    # Define destinos a partir dos prefixos de url
+    - match:
+      - uri:
+          prefix: "/"
+      route:
       - destination:
           host: svc
           subset: v1
-        weight: 50
+
+    - match:
+      - uri:
+          prefix: "/b"
+      route:
       - destination:
           host: svc
-          subset: v2
-        weight: 50
+          subset: v1
+    # Define destinos a partir de quantidade de trafego de requests
+    # - route:
+    #   - destination:
+    #       host: svc
+    #       subset: v1
+    #     weight: 50
+    #   - destination:
+    #       host: svc
+    #       subset: v2
+    #     weight: 50
 
 ---
 
