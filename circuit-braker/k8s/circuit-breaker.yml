@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: circuit-breaker-servicex
+spec:
+  host: servicex-service.default.svc.cluster.local
+  trafficPolicy:
+    outlierDetection:
+    # se estiver usando um serviço que devolve muito erro 500, esse talvez não seria uma boa opção, pois vai pegar tbm o internal server error, que é um erro de aplicação.
+      # consecutive5xxErrors: 20 
+      consecutiveGatewayErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 100
